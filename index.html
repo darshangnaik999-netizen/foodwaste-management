@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SustainFood AI | Food Waste Management</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🌱</div>
+        <div>
+          <h2>SustainFood<span>AI</span></h2>
+          <small>Smart Food Management</small>
+        </div>
+      </div>
+
+      <p class="nav-label">MAIN MENU</p>
+      <nav>
+        <button class="nav-link active" data-page="dashboard">▦ Dashboard</button>
+        <button class="nav-link" data-page="prediction">✦ AI Prediction</button>
+        <button class="nav-link" data-page="records">▤ Food Records</button>
+        <button class="nav-link" data-page="menu">☷ Menu Planner</button>
+        <button class="nav-link" data-page="inventory">▣ Inventory</button>
+        <button class="nav-link" data-page="donations">♡ Food Donations</button>
+        <button class="nav-link" data-page="analytics">▥ Analytics</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="eco-note">
+          <span>🌍</span>
+          <strong>Save Food, Save Earth</strong>
+          <small>Every meal matters.</small>
+        </div>
+        <button class="logout-btn" id="logoutBtn">↪ Demo Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FOOD INTELLIGENCE PLATFORM</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="profile">
+          <div class="profile-icon">A</div>
+          <div><strong>Administrator</strong><small>Project Demo</small></div>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="page active" id="dashboard">
+        <div class="welcome-banner">
+          <div>
+            <p class="eyebrow light">WELCOME TO SUSTAINFOOD AI</p>
+            <h2>Make every meal count. 🌿</h2>
+            <p>Monitor food consumption, predict demand and reduce waste.</p>
+          </div>
+          <div class="banner-emoji">🥗</div>
+        </div>
+
+        <div class="section-heading">
+          <div><h2>Today's Overview</h2><p id="currentDate"></p></div>
+          <button class="secondary-btn" onclick="refreshDashboard()">↻ Refresh</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-top"><span>Food Prepared</span><span class="stat-icon green">🍱</span></div>
+            <h2 id="preparedTotal">0</h2><small>Meals</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Food Consumed</span><span class="stat-icon blue">🍽️</span></div>
+            <h2 id="consumedTotal">0</h2><small>Meals</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Leftover Food</span><span class="stat-icon orange">♻️</span></div>
+            <h2 id="leftoverTotal">0</h2><small>Meals</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Waste Percentage</span><span class="stat-icon red">📉</span></div>
+            <h2 id="wastePercent">0%</h2><small>Of prepared food</small>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><h3>Food Consumption</h3><p>Prepared vs consumed</p></div></div>
+            <canvas id="foodChart"></canvas>
+          </article>
+          <article class="panel prediction-highlight">
+            <span class="pill">AI INSIGHT</span>
+            <div class="big-emoji">🤖</div>
+            <h3>Recommended Preparation</h3>
+            <p>Estimated food quantity for the next meal.</p>
+            <h2 id="dashboardPrediction">-- <small>meals</small></h2>
+            <button class="primary-btn" onclick="showPage('prediction')">View Prediction →</button>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Recent Food Records</h3><p>Latest saved entries</p></div>
+            <button class="text-btn" onclick="showPage('records')">View all →</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Menu</th><th>Prepared</th><th>Consumed</th><th>Leftover</th></tr></thead>
+              <tbody id="recentRecords"><tr><td colspan="5">No records yet.</td></tr></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- AI PREDICTION -->
+      <section class="page" id="prediction">
+        <div class="page-intro"><h2>AI Food Demand Prediction ✦</h2>
+          <p>Estimate the quantity of food required using attendance and previous consumption patterns.</p>
+        </div>
+        <div class="form-layout">
+          <article class="panel">
+            <h3>Enter Meal Details</h3>
+            <form id="predictionForm">
+              <label>Expected Attendance</label>
+              <input type="number" id="attendance" min="1" placeholder="e.g. 500" required>
+              <label>Meal Type</label>
+              <select id="mealType"><option>Lunch</option><option>Breakfast</option><option>Dinner</option></select>
+              <label>Menu Item</label>
+              <input id="predictionMenu" placeholder="e.g. Rice and meals" required>
+              <label>Previous Average Consumption</label>
+              <input type="number" id="previousConsumption" min="0" placeholder="e.g. 420" required>
+              <label>Expected Demand Adjustment (%)</label>
+              <input type="number" id="demandChange" value="0" min="-50" max="100">
+              <button class="primary-btn full-btn" type="submit">✦ Generate Prediction</button>
+            </form>
+          </article>
+          <article class="panel result-panel">
+            <span class="pill">PREDICTION RESULT</span>
+            <div class="big-emoji">📊</div>
+            <h3>Recommended Food Quantity</h3>
+            <h2 id="predictionResult">---</h2>
+            <p id="predictionExplanation">Enter the meal details to calculate a recommendation.</p>
+            <div class="tip-box">💡 <strong>Smart tip:</strong> Prepare according to expected demand and update records regularly to improve future estimates.</div>
+          </article>
+        </div>
+        <p class="notice">Demo version: this starter uses a transparent calculation, not a trained machine-learning model. Connect a Python ML model for actual Random Forest predictions.</p>
+      </section>
+
+      <!-- FOOD RECORDS -->
+      <section class="page" id="records">
+        <div class="page-intro"><h2>Food Records</h2><p>Save daily meal preparation and consumption details.</p></div>
+        <article class="panel">
+          <h3>Add Daily Food Record</h3>
+          <form id="recordForm" class="form-grid">
+            <div><label>Date</label><input type="date" id="recordDate" required></div>
+            <div><label>Menu</label><input id="recordMenu" placeholder="e.g. Rice, Dal" required></div>
+            <div><label>Attendance</label><input type="number" id="recordAttendance" min="0" required></div>
+            <div><label>Food Prepared (meals)</label><input type="number" id="recordPrepared" min="0" required></div>
+            <div><label>Food Consumed (meals)</label><input type="number" id="recordConsumed" min="0" required></div>
+            <div class="form-action"><button class="primary-btn" type="submit">+ Save Record</button></div>
+          </form>
+        </article>
+        <article class="panel">
+          <div class="panel-heading"><h3>All Food Records</h3><button class="secondary-btn" id="exportRecords">Export CSV ↓</button></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Date</th><th>Menu</th><th>Attendance</th><th>Prepared</th><th>Consumed</th><th>Leftover</th><th>Action</th></tr></thead>
+              <tbody id="recordsTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- MENU PLANNER -->
+      <section class="page" id="menu">
+        <div class="page-intro"><h2>Menu Planner</h2><p>Manage the meals planned for your food service.</p></div>
+        <article class="panel">
+          <h3>Add Menu Item</h3>
+          <form id="menuForm" class="inline-form">
+            <input id="menuName" placeholder="Enter food item" required>
+            <select id="menuCategory"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snacks</option></select>
+            <button class="primary-btn" type="submit">+ Add Item</button>
+          </form>
+        </article>
+        <div class="menu-grid" id="menuList"></div>
+      </section>
+
+      <!-- INVENTORY -->
+      <section class="page" id="inventory">
+        <div class="page-intro"><h2>Inventory Management</h2><p>Track ingredients, available quantities and expiry dates.</p></div>
+        <article class="panel">
+          <h3>Add Ingredient</h3>
+          <form id="inventoryForm" class="form-grid">
+            <div><label>Ingredient</label><input id="ingredientName" placeholder="e.g. Rice" required></div>
+            <div><label>Quantity</label><input id="ingredientQty" type="number" min="0" step="0.1" required></div>
+            <div><label>Unit</label><select id="ingredientUnit"><option>kg</option><option>litres</option><option>packets</option><option>pieces</option></select></div>
+            <div><label>Expiry Date</label><input id="ingredientExpiry" type="date" required></div>
+            <div class="form-action"><button class="primary-btn" type="submit">+ Add Ingredient</button></div>
+          </form>
+        </article>
+        <article class="panel">
+          <h3>Current Stock</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Ingredient</th><th>Quantity</th><th>Expiry Date</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="inventoryTable"></tbody>
+          </table></div>
+        </article>
+      </section>
+
+      <!-- DONATIONS -->
+      <section class="page" id="donations">
+        <div class="page-intro"><h2>Surplus Food Donations ♡</h2><p>Record safe surplus food that may be available for donation.</p></div>
+        <article class="panel">
+          <h3>Register Surplus Food</h3>
+          <form id="donationForm" class="form-grid">
+            <div><label>Food Item</label><input id="donationFood" placeholder="e.g. Rice meals" required></div>
+            <div><label>Quantity (meals)</label><input id="donationQty" type="number" min="1" required></div>
+            <div><label>Available Until</label><input id="donationExpiry" type="datetime-local" required></div>
+            <div><label>Contact / Organization</label><input id="donationContact" placeholder="Contact details" required></div>
+            <div class="form-action"><button class="primary-btn" type="submit">+ Register Donation</button></div>
+          </form>
+        </article>
+        <div class="donation-list" id="donationList"></div>
+        <p class="notice">Only donate food that has been safely handled and stored. Follow applicable food-safety requirements.</p>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="page" id="analytics">
+        <div class="page-intro"><h2>Analytics & Reports</h2><p>Understand food usage and identify opportunities to reduce waste.</p></div>
+        <div class="stats-grid">
+          <article class="stat-card"><span>Total Prepared</span><h2 id="analyticsPrepared">0</h2></article>
+          <article class="stat-card"><span>Total Consumed</span><h2 id="analyticsConsumed">0</h2></article>
+          <article class="stat-card"><span>Total Leftover</span><h2 id="analyticsLeftover">0</h2></article>
+          <article class="stat-card"><span>Average Waste</span><h2 id="analyticsWaste">0%</h2></article>
+        </div>
+        <article class="panel">
+          <h3>Food Waste Overview</h3>
+          <canvas id="wasteChart"></canvas>
+        </article>
+      </section>
+
+      <footer>© 2026 SustainFood AI · Smart technology for a sustainable future 🌱</footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

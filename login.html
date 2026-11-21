@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SustainFood AI - Admin Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+  <div class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">🌱</div>
+      <h1>SustainFood <span>AI</span></h1>
+      <p class="login-subtitle">Smart Food Waste Management</p>
+
+      <div class="login-welcome">
+        <h2>Welcome Back!</h2>
+        <p>Sign in to access your admin dashboard.</p>
+      </div>
+
+      <form id="loginForm">
+        <label>Username</label>
+        <input type="text" id="adminUsername"
+          placeholder="Enter username" required>
+
+        <label>Password</label>
+        <input type="password" id="adminPassword"
+          placeholder="Enter password" required>
+
+        <p id="loginError" class="login-error"></p>
+
+        <button type="submit" class="primary-btn full-btn">
+          Login to Dashboard →
+        </button>
+      </form>
+
+      <p class="login-footer">🌍 Save Food, Save Earth</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("adminUsername").value;
+      const password = document.getElementById("adminPassword").value;
+
+      if (username === "admin" && password === "food123") {
+        window.location.href = "/dashboard";
+      } else {
+        document.getElementById("loginError").textContent =
+          "Invalid username or password!";
+      }
+    });
+  </script>
+
+</body>
+</html>
